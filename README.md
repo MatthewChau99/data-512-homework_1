@@ -7,7 +7,7 @@ The source data is obtained through Pageviews API, which provides access to desk
 - Endpoint: https://wikimedia.org/api/rest_v1/#!/Pageviews_data/get_metrics_pageviews_aggregate_project_access_agent_granularity_start_end
 
 ### Dinosaur Related Articles List
-The list of dinosaur names and urls are in `/data/data_raw/dinosaur_genera.cleaned.SEPT.2022.csv`
+The list of dinosaur names and urls are in `/data/data_raw/dinosaur_genera.cleaned.SEPT.2022.csv`. Some titles in the list would get empty response. It'd be worthy to look into in future research projects.
 
 ## Data Processing
 For this project, three datasets are generated:
@@ -20,8 +20,18 @@ Each JSON file uses the title names as keys, and the values are a list of time-s
 ## Data Visualization
 Three visualizations are created using seaborn lineplots as a basic visual analysis:
 1. Maximum Average and Minimum Average
-    This graph contains time series for articles with the highest average page requests and lowest average page requests for both desktop and mobile access.
+    This graph contains time series for articles with the highest average page requests and lowest average page requests for both desktop and mobile access. This is located in `img/max_min_avg.png`.
 2. Top 10 Peak Page Views
-    This graph contains time series for the top 10 article pages by peak page views over the entire time by access type.
+    This graph contains time series for the top 10 article pages by peak page views over the entire time by access type. This is located in `img/top10peak.png`.
 3. Fewest Months of Data
-    This graph shows the pages with the fewest months of available data. Some of them have only one month of data.
+    This graph shows the pages with the fewest months of available data. Some of them have only one month of data. The created graph is located in `img/top10peak.png`.
+
+
+## License
+Copyright 2022 Matthew Chau
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
