@@ -97,6 +97,7 @@ def generate_monthly_desktop_access():
     for article_title in tqdm.tqdm(ARTICLE_TITLES):
         json_response = request_pageviews_per_article(article_title=article_title)
         
+        # Empty response
         if not json_response:
             print(f'{article_title} has empty response. Please check.')
             continue
@@ -107,6 +108,7 @@ def generate_monthly_desktop_access():
             print(f'{article_title} has error. Please check.')
             error_articles['titles'].append(article_title)
     
+    # Creates output
     if not os.path.exists('data'):
         os.mkdir('data')
     
@@ -130,12 +132,15 @@ def generate_monthly_mobile_access():
     for article_title in tqdm.tqdm(ARTICLE_TITLES):
         mobile_req_params = ARTICLE_PAGEVIEWS_PARAMS_TEMPLATE.copy()
         
+        # Mobile-app response
         mobile_req_params['access'] = 'mobile-app'
         app_json_response = request_pageviews_per_article(article_title=article_title, request_template=mobile_req_params)
 
+        # Mobile-web response
         mobile_req_params['access'] = 'mobile-web'
         web_json_response = request_pageviews_per_article(article_title=article_title, request_template=mobile_req_params)
         
+        # Empty response for each API request
         if not app_json_response:
             print(f'{article_title} mobile app has empty response. Please check.')
             continue
@@ -145,6 +150,7 @@ def generate_monthly_mobile_access():
             continue
 
         try:
+            # Combine the web and app results
             comb_json_response = [{
             'project': web['project'],
             'article': web['article'],
@@ -154,12 +160,15 @@ def generate_monthly_mobile_access():
             'agent': 'user',
             'views': web['views'] + app['views']
         } for web, app in zip(web_json_response['items'], app_json_response['items'])]
-
+            
+            # Add to result json
             result_json.update({article_title: comb_json_response})
+
         except KeyError:
             print(f'{article_title} has error. Please check.')
             error_articles['titles'].append(article_title)
     
+    # Creates output
     if not os.path.exists('data'):
         os.mkdir('data')
 
@@ -185,14 +194,18 @@ def generate_monthly_cumulative():
     for article_title in tqdm.tqdm(ARTICLE_TITLES):
         mobile_req_params = ARTICLE_PAGEVIEWS_PARAMS_TEMPLATE.copy()
         
+        # Mobile app response
         mobile_req_params['access'] = 'mobile-app'
         app_json_response = request_pageviews_per_article(article_title=article_title, request_template=mobile_req_params)
 
+        # Mobile web response
         mobile_req_params['access'] = 'mobile-web'
         web_json_response = request_pageviews_per_article(article_title=article_title, request_template=mobile_req_params)
         
+        # Desktop response
         desktop_json_response = request_pageviews_per_article(article_title=article_title, request_template=ARTICLE_PAGEVIEWS_PARAMS_TEMPLATE)
 
+        # Empty response for each
         if not app_json_response:
             print(f'{article_title} mobile app has empty response. Please check.')
             continue
@@ -206,6 +219,7 @@ def generate_monthly_cumulative():
             continue
         
         try:
+            # Combine results from all three responses
             comb_json_response = [{
             'project': web['project'],
             'article': web['article'],
@@ -214,6 +228,8 @@ def generate_monthly_cumulative():
             'agent': 'user',
             'views': web['views'] + app['views'] + desktop['views']
         } for web, app, desktop in zip(web_json_response['items'], app_json_response['items'], desktop_json_response['items'])]
+            
+            # Accumulate the views
             for i, comb in enumerate(comb_json_response):
                 if i > 0:
                     prev_comb = comb_json_response[i - 1]
@@ -224,6 +240,7 @@ def generate_monthly_cumulative():
             print(f'{article_title} has error. Please check.')
             error_articles['titles'].append(article_title)
     
+    # Creates output
     if not os.path.exists('data'):
         os.mkdir('data')
 
