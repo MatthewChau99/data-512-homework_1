@@ -1,16 +1,19 @@
 import json
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 
+PROJECT_ROOT_DIR = Path(__file__).absolute().parent.parent
+
 ### Loading datasets
-with open(os.path.join('data', 'dino_monthly_desktop_<start201501>-<end202201>.json'), 'r') as f:
+with open(os.path.join(PROJECT_ROOT_DIR, 'data', 'data_clean', 'dino_monthly_desktop_<start201501>-<end202210>.json'), 'r') as f:
     desktop_dict = json.load(f)
 
-with open(os.path.join('data', 'dino_monthly_mobile_<start201501>-<end202201>.json'), 'r') as f:
+with open(os.path.join(PROJECT_ROOT_DIR, 'data', 'data_clean', 'dino_monthly_mobile_<start201501>-<end202210>.json'), 'r') as f:
     mobile_dict = json.load(f)
 
 
@@ -24,7 +27,7 @@ desktop_views = {
 mobile_views = {
     article: {
         'views':[month['views'] for month in mobile_dict[article]],
-        'months': [month['timestamp'][:-2] for month in mobile_dict[article]] 
+        'months': [month['timestamp'][:8] for month in mobile_dict[article]] 
     } for article in mobile_dict
 }
 
@@ -74,7 +77,7 @@ def plot_max_min_average():
     plt.title("Max and Min average for desktop and mobile")
     plt.xlabel('Date')
     plt.ylabel('Views')
-    plt.savefig(os.path.join('img', 'max_min_avg.png'))
+    plt.savefig(os.path.join(PROJECT_ROOT_DIR, 'img', 'max_min_avg.png'))
     plt.close()
 
 
@@ -88,21 +91,19 @@ def top_10_peak():
     # Modifying the data structure
     desktop_max = {
         article: {
-            'views': desktop_views[article]['views'][np.argmax(desktop_views[article]['views'])],
-            'months': desktop_views[article]['months'][np.argmax(desktop_views[article]['views'])]
+            'views': desktop_views[article]['views'][np.argmax(desktop_views[article]['views'])]
         } for article in desktop_dict
     }
 
     mobile_max = {
         article: {
-            'views': mobile_views[article]['views'][np.argmax(mobile_views[article]['views'])],
-            'months': mobile_views[article]['months'][np.argmax(mobile_views[article]['views'])]
+            'views': mobile_views[article]['views'][np.argmax(mobile_views[article]['views'])]
         } for article in mobile_dict
     }
 
     # Sort the peak views for mobile and desktop and filter only the top 10
-    top_10_desktop = [(article, desktop_max[article]['views'], desktop_max[article]['months']) for article in desktop_max]
-    top_10_mobile = [(article, mobile_max[article]['views'], mobile_max[article]['months']) for article in mobile_max]
+    top_10_desktop = [(article, desktop_max[article]['views']) for article in desktop_max]
+    top_10_mobile = [(article, mobile_max[article]['views']) for article in mobile_max]
 
     top_10_desktop = sorted(top_10_desktop, key=lambda x:x[1], reverse=True)[:10]
     top_10_mobile = sorted(top_10_mobile, key=lambda x:x[1], reverse=True)[:10]
@@ -122,7 +123,7 @@ def top_10_peak():
     plt.xlabel('Date')
     plt.ylabel('Views')
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
-    plt.savefig(os.path.join('img', 'top10peak.png'))
+    plt.savefig(os.path.join(PROJECT_ROOT_DIR, 'img', 'top10peak.png'))
     plt.close()
 
 
@@ -154,7 +155,7 @@ def fewest_month():
     plt.title("Fewest month of data for desktop and mobile")
     plt.xlabel('Date')
     plt.ylabel('Views')
-    plt.savefig(os.path.join('img', 'fewest_month.png'))
+    plt.savefig(os.path.join(PROJECT_ROOT_DIR, 'img', 'fewest_month.png'))
     plt.close()
 
 

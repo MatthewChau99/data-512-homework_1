@@ -1,5 +1,5 @@
 # Professionalism & Reproducibility
-The goal of the project is to construct, analyze, and publish a dataset of monthly article traffic for a select set of pages from English Wikipedia from January 1, 2015 through September 30, 2022. The subset is limited to all dinosaur related articles for dataset generation, and only user requests are being considered for this project.
+The goal of the project is to construct, analyze, and publish a dataset of monthly article traffic for a select set of pages from English Wikipedia from July 1, 2015 through September 30, 2022. The subset is limited to all dinosaur related articles for dataset generation, and only user requests are being considered for this project.
 
 ## Data
 The source data is obtained through Pageviews API, which provides access to desktop, mobile web, and mobile app trafic data of English Wikipedia. The links are as shown below:
@@ -11,9 +11,9 @@ The list of dinosaur names and urls are in `/data/data_raw/dinosaur_genera.clean
 
 ## Data Processing
 For this project, three datasets are generated:
-1. Monthly mobile access: the dataset contains monthly user traffic for both mobile-app and mobile-web access. This is stored in `data/data_clean/dino_monthly_mobile_<start201501>-<end202210>.json`
-2. Monthly desktop access: the dataset contains monthly user traffic accessed from desktop. This is stored in `data/data_clean/dino_monthly_desktop_<start201501>-<end202210>.json`
-3. Monthly cumulative: the dataset contains cumulative monthly user traffic both accessed from mobile and desktop. This is stored in `data/data_clean/dino_monthly_cumulative_<start201501>-<end202210>.json`.
+1. Monthly mobile access: the dataset contains monthly user traffic for both mobile-app and mobile-web access. This is stored in `data/data_clean/dino_monthly_mobile_<startXXXXXX>-<endXXXXXX>.json`
+2. Monthly desktop access: the dataset contains monthly user traffic accessed from desktop. This is stored in `data/data_clean/dino_monthly_desktop_<startXXXXXX>-<endXXXXXX>.json`
+3. Monthly cumulative: the dataset contains cumulative monthly user traffic both accessed from mobile and desktop. This is stored in `data/data_clean/dino_monthly_cumulative_<startXXXXXX>-<endXXXXXX>.json`.
 
 Each JSON file uses the title names as keys, and the values are a list of time-series data collected from the requests on a monthly basis.
 
@@ -25,6 +25,10 @@ Three visualizations are created using seaborn lineplots as a basic visual analy
     This graph contains time series for the top 10 article pages by peak page views over the entire time by access type. This is located in `img/top10peak.png`.
 3. Fewest Months of Data
     This graph shows the pages with the fewest months of available data. Some of them have only one month of data. The created graph is located in `img/top10peak.png`.
+
+## Code for Reproduction
+For a faster go-through, I have created query functions and visualization functions in `src/data_query.py` and `src/data_visualize.py`. Their usage are shown in `demo_notebook_clean.ipynb`. <br>
+For detailed explanation, please refer to `demo_notebook_detailed.ipynb` where each step is detailedly commented.
 
 
 ## License
